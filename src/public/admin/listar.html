@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Orientações</title>
+    <link rel="stylesheet" href="../assets/css/listar-orientacoes.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Deletar Orientações</h1>
+        <div id="orientacoes-deletar"></div>
+    </div>
+
+
+    <script>
+
+        // Carrega Orientações
+        async function carregarOrientacoes() {
+            try {
+                const response = await fetch('/orientacoes');
+                const orientacoes = await response.json();
+                const orientacoesLista = document.getElementById('orientacoes-deletar');
+
+                orientacoes.forEach(orientacao => {
+                    const divOrientacao = document.createElement('div');
+                    divOrientacao.classList.add('orientacao');
+                    divOrientacao.innerHTML = `
+                        <h2>${orientacao.titulo}</h2>
+                        <button onclick="deletarOrientacao('${orientacao.id}')">Deletar</button>
+                    `;
+                    orientacoesLista.appendChild(divOrientacao);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar orientações:', error);
+            }
+        }
+
+        
+        // Deleta Orientações
+        async function deletarOrientacao(id) {
+            try {
+                const response = await fetch(`/orientacao/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Orientação deletada com sucesso');
+                    // Remove o item da lista sem recarregar a página
+                    document.querySelector(button[onclick="deletarOrientacao('${id}')"]).parentElement.remove();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Erro ao deletar orientação: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Erro ao deletar orientação:', error);
+            }
+        }
+
+        window.addEventListener('load', carregarOrientacoes);
+    </script>
+</body>
+</html>

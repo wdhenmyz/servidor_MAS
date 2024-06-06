@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhar Orientação</title>
+    <link rel="stylesheet" href="../assets/css/listar-orientacoes.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes da Orientação</h1>
+        <div id="orientacao-detalhes"></div>
+    </div>
+
+    <script>
+        async function carregarDetalhes() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            try {
+                const response = await fetch(`/orientacao/${id}`);
+                const orientacao = await response.json();
+                const orientacaoDetalhes = document.getElementById('orientacao-detalhes');
+
+                orientacaoDetalhes.innerHTML = `
+                    <h2>${orientacao.titulo}</h2>
+                    <p>${orientacao.descricao}</p>
+                    <img src="../${orientacao.imagem}" alt="Imagem da Orientação">
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar os detalhes da orientação:', error);
+            }
+        }
+
+        window.addEventListener('load', carregarDetalhes);
+    </script>
+</body>
+</html>
